@@ -1,9 +1,11 @@
 package com.example.rex.note.ui.activity;
 
 
+import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.animation.DecelerateInterpolator;
 
 import com.example.rex.note.R;
@@ -21,18 +23,27 @@ public abstract class ToolBarActivity extends BaseActivity {
     @Bind(R.id.app_bar)
     protected AppBarLayout appBar;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initToolBar();
+    }
+
     /**
      * 设置home icon是否可见
+     *
      * @return
      */
-    protected boolean canBack(){
+    protected boolean canBack() {
         return true;
     }
 
-    protected void initToolBar(){
+    protected void initToolBar() {
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
-        if (actionBar != null){
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(canBack());
         }
     }
@@ -44,6 +55,12 @@ public abstract class ToolBarActivity extends BaseActivity {
                 .setInterpolator(new DecelerateInterpolator(2))
                 .start();
         isToolBarHiding = !isToolBarHiding;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
 }
