@@ -58,9 +58,8 @@ public class MainActivity extends ToolBarActivity implements IMainView {
 
     private void setupViewPager(ViewPager viewPager) {
         CategoryAdapter categoryAdapter = new CategoryAdapter(getSupportFragmentManager());
-        categoryAdapter.addFragment(new CheeseListFragment(), "Category 1");
-        categoryAdapter.addFragment(new CheeseListFragment(), "Category 2");
-        categoryAdapter.addFragment(new CheeseListFragment(), "Category 3");
+        categoryAdapter.addFragment(new CheeseListFragment(), "日历");
+        categoryAdapter.addFragment(new CheeseListFragment(), "列表");
         viewPager.setAdapter(categoryAdapter);
     }
 
