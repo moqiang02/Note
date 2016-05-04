@@ -16,35 +16,32 @@
 
 package com.example.rex.note.ui.fragment;
 
-import android.content.Context;
-import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.rex.note.R;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import cn.aigestudio.datepicker.bizs.decors.DPDecor;
+import cn.aigestudio.datepicker.cons.DPMode;
+import cn.aigestudio.datepicker.views.DatePicker;
 
-public class CheeseListFragment extends Fragment {
+public class ListFragment extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = (View) inflater.inflate(
-                R.layout.test_fragment, container, false);
-        return v;
+        View view = inflater.inflate(
+                R.layout.list_fragment, container, false);
+
+        return view;
     }
 
 

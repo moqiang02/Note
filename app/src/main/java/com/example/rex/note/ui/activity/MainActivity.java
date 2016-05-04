@@ -12,8 +12,9 @@ import android.view.ViewGroup;
 import com.example.rex.note.R;
 import com.example.rex.note.iView.IMainView;
 import com.example.rex.note.presenter.MainPresenter;
-import com.example.rex.note.ui.fragment.CheeseListFragment;
+import com.example.rex.note.ui.fragment.CalendarFragment;
 import com.example.rex.note.adapter.CategoryAdapter;
+import com.example.rex.note.ui.fragment.ListFragment;
 
 import butterknife.Bind;
 
@@ -58,8 +59,8 @@ public class MainActivity extends ToolBarActivity implements IMainView {
 
     private void setupViewPager(ViewPager viewPager) {
         CategoryAdapter categoryAdapter = new CategoryAdapter(getSupportFragmentManager());
-        categoryAdapter.addFragment(new CheeseListFragment(), "日历");
-        categoryAdapter.addFragment(new CheeseListFragment(), "列表");
+        categoryAdapter.addFragment(new CalendarFragment(), "日历");
+        categoryAdapter.addFragment(new ListFragment(), "列表");
         viewPager.setAdapter(categoryAdapter);
     }
 
