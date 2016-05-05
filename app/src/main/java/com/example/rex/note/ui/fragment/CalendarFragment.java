@@ -16,8 +16,6 @@
 
 package com.example.rex.note.ui.fragment;
 
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -25,76 +23,74 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.rex.note.R;
+
+import com.example.rex.note.model.entity.DPicker;
+import com.example.rex.note.util.RxBus;
+import com.example.rex.note.widget.DatePicket.bizs.calendars.DPCManager;
+import com.example.rex.note.widget.DatePicket.bizs.decors.DPDecor;
+import com.example.rex.note.widget.DatePicket.cons.DPMode;
+import com.example.rex.note.widget.DatePicket.views.DatePicker;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-import cn.aigestudio.datepicker.bizs.decors.DPDecor;
-import cn.aigestudio.datepicker.cons.DPMode;
-import cn.aigestudio.datepicker.views.DatePicker;
+import rx.Subscription;
+import rx.functions.Action1;
 
 public class CalendarFragment extends Fragment {
-
+    private Subscription rxSubscription;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(
                 R.layout.calendar_fragment, container, false);
+
+        // 自定义背景绘制示例 Example of custom date's background
+        List<String> tmp = new ArrayList<>();
+        tmp.add("2015-7-1");
+        tmp.add("2015-7-8");
+        tmp.add("2015-7-16");
+        DPCManager.getInstance().setDecorBG(tmp);
+
         DatePicker picker = (DatePicker) view.findViewById(R.id.main_dp);
-        picker.setDate(2015, 10);
+        picker.setDate(2015, 7);
         picker.setFestivalDisplay(false);
         picker.setTodayDisplay(false);
-        picker.setHolidayDisplay(false);
-        picker.setDeferredDisplay(false);
-        picker.setMode(DPMode.NONE);
+        picker.setMode(DPMode.SINGLE);
         picker.setDPDecor(new DPDecor() {
             @Override
-            public void drawDecorTL(Canvas canvas, Rect rect, Paint paint, String data) {
-                super.drawDecorTL(canvas, rect, paint, data);
-                switch (data) {
-                    case "2015-10-5":
-                    case "2015-10-7":
-                    case "2015-10-9":
-                    case "2015-10-11":
-                        paint.setColor(Color.GREEN);
-                        canvas.drawRect(rect, paint);
-                        break;
-                    default:
-                        paint.setColor(Color.RED);
-                        canvas.drawCircle(rect.centerX(), rect.centerY(), rect.width() / 2, paint);
-                        break;
-                }
-            }
-
-            @Override
-            public void drawDecorTR(Canvas canvas, Rect rect, Paint paint, String data) {
-                super.drawDecorTR(canvas, rect, paint, data);
-                switch (data) {
-                    case "2015-10-10":
-                    case "2015-10-11":
-                    case "2015-10-12":
-                        paint.setColor(Color.BLUE);
-                        canvas.drawCircle(rect.centerX(), rect.centerY(), rect.width() / 2, paint);
-                        break;
-                    default:
-                        paint.setColor(Color.YELLOW);
-                        canvas.drawRect(rect, paint);
-                        break;
-                }
+            public void drawDecorBG(Canvas canvas, Rect rect, Paint paint) {
+                paint.setColor(getResources().getColor(R.color.fen));
+                canvas.drawCircle(rect.centerX(), rect.centerY(), rect.width() / 2F, paint);
             }
         });
+        picker.setOnDatePickedListener(new DatePicker.OnDatePickedListener() {
+            @Override
+            public void onDatePicked(String date) {
+
+            }
+        });
+
+        rxSubscription = RxBus.getDefault().toObserverable(DPicker.class)
+                .subscribe(new Action1<DPicker>() {
+                               @Override
+                               public void call(DPicker dPicker) {
+                                   int i = dPicker.i;
+                                   Log.d("rex", i + "**");
+                               }
+                           },
+                        new Action1<Throwable>() {
+                            @Override
+                            public void call(Throwable throwable) {
+                                // TODO: 处理异常
+                            }
+                        });
         return view;
     }
 

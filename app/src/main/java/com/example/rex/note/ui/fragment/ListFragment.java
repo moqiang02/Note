@@ -17,11 +17,6 @@
 package com.example.rex.note.ui.fragment;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -34,7 +29,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.rex.note.R;
 import com.example.rex.note.model.entity.Cheeses;
 
@@ -42,9 +36,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import cn.aigestudio.datepicker.bizs.decors.DPDecor;
-import cn.aigestudio.datepicker.cons.DPMode;
-import cn.aigestudio.datepicker.views.DatePicker;
+import com.example.rex.note.widget.DatePicket.cons.DPMode;
+import com.example.rex.note.widget.DatePicket.views.DatePicker;
 
 public class ListFragment extends Fragment {
 
