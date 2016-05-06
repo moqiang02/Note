@@ -62,8 +62,10 @@ public class CalendarFragment extends BaseFragment<CalendarFragmentPresenter> im
 
         DatePicker picker = (DatePicker) view.findViewById(R.id.main_dp);
         picker.setDate(2015, 7);
-        picker.setFestivalDisplay(false);
+        picker.setFestivalDisplay(true);
         picker.setTodayDisplay(false);
+        picker.setHolidayDisplay(false);
+        picker.setDeferredDisplay(false);
         picker.setMode(DPMode.SINGLE);
         picker.setDPDecor(new DPDecor() {
             @Override

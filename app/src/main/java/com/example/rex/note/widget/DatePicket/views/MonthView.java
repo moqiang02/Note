@@ -215,7 +215,7 @@ public class MonthView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int measureWidth = MeasureSpec.getSize(widthMeasureSpec);
-        setMeasuredDimension(measureWidth, (int) (measureWidth * 6F / 7F));
+        setMeasuredDimension(measureWidth, (int) (measureWidth * 5F / 7F));
     }
 
     @Override

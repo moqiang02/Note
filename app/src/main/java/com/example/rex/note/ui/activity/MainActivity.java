@@ -34,6 +34,7 @@ public class MainActivity extends ToolBarActivity implements IMainView {
 
     @Override
     protected int getLayoutResId() {
+        Log.d("rex","mainactivity");
         return R.layout.activity_main;
     }
 
