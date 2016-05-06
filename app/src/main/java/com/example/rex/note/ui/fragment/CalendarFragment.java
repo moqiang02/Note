@@ -17,20 +17,14 @@
 package com.example.rex.note.ui.fragment;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.example.rex.note.R;
-
+import com.example.rex.note.iView.ICalendarView;
 import com.example.rex.note.model.entity.DPicker;
+import com.example.rex.note.presenter.CalendarFragmentPresenter;
 import com.example.rex.note.util.RxBus;
 import com.example.rex.note.widget.DatePicket.bizs.calendars.DPCManager;
 import com.example.rex.note.widget.DatePicket.bizs.decors.DPDecor;
@@ -43,14 +37,22 @@ import java.util.List;
 import rx.Subscription;
 import rx.functions.Action1;
 
-public class CalendarFragment extends Fragment {
+public class CalendarFragment extends BaseFragment<CalendarFragmentPresenter> implements ICalendarView {
     private Subscription rxSubscription;
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(
-                R.layout.calendar_fragment, container, false);
 
+    @Override
+    protected int getLayoutResId() {
+        return R.layout.calendar_fragment;
+    }
+
+    @Override
+    protected void initPresenter() {
+        presenter = new CalendarFragmentPresenter(getContext(),this);
+        presenter.init();
+    }
+
+
+    public void initView() {
         // 自定义背景绘制示例 Example of custom date's background
         List<String> tmp = new ArrayList<>();
         tmp.add("2015-7-1");
@@ -91,7 +93,6 @@ public class CalendarFragment extends Fragment {
                                 // TODO: 处理异常
                             }
                         });
-        return view;
     }
 
 

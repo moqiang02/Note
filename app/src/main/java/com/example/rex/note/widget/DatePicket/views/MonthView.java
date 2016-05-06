@@ -22,17 +22,17 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Scroller;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.example.rex.note.widget.DatePicket.bizs.calendars.DPCManager;
 import com.example.rex.note.widget.DatePicket.bizs.decors.DPDecor;
 import com.example.rex.note.widget.DatePicket.bizs.themes.DPTManager;
 import com.example.rex.note.widget.DatePicket.cons.DPMode;
 import com.example.rex.note.widget.DatePicket.entities.DPInfo;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * MonthView
@@ -128,7 +128,7 @@ public class MonthView extends View {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 //阻止viewpager拦截滑动事件
-                this.getParent().requestDisallowInterceptTouchEvent(true);
+//                this.getParent().requestDisallowInterceptTouchEvent(true);
 
                 mScroller.forceFinished(true);
                 mSlideMode = null;
