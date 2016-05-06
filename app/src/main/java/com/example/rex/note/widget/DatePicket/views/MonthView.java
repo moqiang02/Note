@@ -16,6 +16,7 @@ import android.graphics.drawable.shapes.OvalShape;
 import android.os.Build;
 import android.os.Parcelable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -128,7 +129,9 @@ public class MonthView extends View {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 //阻止viewpager拦截滑动事件
-//                this.getParent().requestDisallowInterceptTouchEvent(true);
+                if (event.getX() > 100) {//避免和drawerlayout滑动冲突
+                    this.getParent().requestDisallowInterceptTouchEvent(true);
+                }
 
                 mScroller.forceFinished(true);
                 mSlideMode = null;
