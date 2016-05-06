@@ -47,6 +47,8 @@ public abstract class ToolBarActivity extends BaseActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(canBack());
+        }else{
+            Log.d("rex", "no- toolbar");
         }
     }
 
