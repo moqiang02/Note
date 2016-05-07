@@ -16,39 +16,61 @@
 
 package com.example.rex.note.ui.fragment;
 
-import android.content.Context;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.rex.note.R;
-import com.example.rex.note.model.entity.Cheeses;
+import com.example.rex.note.adapter.DiaryAdapter;
+import com.example.rex.note.iView.IListView;
+import com.example.rex.note.model.entity.Diary;
+import com.example.rex.note.presenter.ListPresenter;
+import com.example.rex.note.ui.widget.LMRecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
-import com.example.rex.note.widget.DatePicket.cons.DPMode;
-import com.example.rex.note.widget.DatePicket.views.DatePicker;
+import butterknife.Bind;
 
-public class ListFragment extends Fragment {
+public class ListFragment extends BaseFragment<ListPresenter> implements
+        SwipeRefreshLayout.OnRefreshListener, IListView, LMRecyclerView.LoadMoreListener {
+    @Bind(R.id.recycler_view)
+    LMRecyclerView recyclerView;
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = (View) inflater.inflate(
-                R.layout.list_fragment, container, false);
+    protected int getLayoutResId() {
+        return R.layout.list_fragment;
+    }
 
-        return v;
+    @Override
+    protected void initPresenter() {
+        presenter = new ListPresenter(getContext(),this);
+        presenter.init();
     }
 
 
+    @Override
+    public void initView() {
+        ArrayList<Diary> Diarys = new ArrayList<>();
+        Diary diary1 = new Diary("1","aaa");
+        Diary diary2 = new Diary("2","bbb");
+        Diary diary3 = new Diary("3","ccc");
+        Diary diary4 = new Diary("4","ddd");
+        Diarys.add(diary1);
+        Diarys.add(diary2);
+        Diarys.add(diary3);
+        Diarys.add(diary4);
+        DiaryAdapter adapter = new DiaryAdapter(getContext(), Diarys);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLoadMoreListener(this);
+    }
+
+    @Override
+    public void loadMore() {
+
+    }
+
+    @Override
+    public void onRefresh() {
+
+    }
 }

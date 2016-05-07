@@ -17,11 +17,10 @@ import butterknife.ButterKnife;
 public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
 
     protected T presenter;
-    View view;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(getLayoutResId(), container, false);
+        View view = inflater.inflate(getLayoutResId(), container, false);
         ButterKnife.bind(this, view);
         initPresenter();
         return view;

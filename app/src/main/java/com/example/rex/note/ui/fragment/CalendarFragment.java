@@ -24,21 +24,24 @@ import android.util.Log;
 import com.example.rex.note.R;
 import com.example.rex.note.iView.ICalendarView;
 import com.example.rex.note.model.entity.DPicker;
-import com.example.rex.note.presenter.CalendarFragmentPresenter;
+import com.example.rex.note.presenter.CalendarPresenter;
 import com.example.rex.note.util.RxBus;
-import com.example.rex.note.widget.DatePicket.bizs.calendars.DPCManager;
-import com.example.rex.note.widget.DatePicket.bizs.decors.DPDecor;
-import com.example.rex.note.widget.DatePicket.cons.DPMode;
-import com.example.rex.note.widget.DatePicket.views.DatePicker;
+import com.example.rex.note.ui.widget.DatePicket.bizs.calendars.DPCManager;
+import com.example.rex.note.ui.widget.DatePicket.bizs.decors.DPDecor;
+import com.example.rex.note.ui.widget.DatePicket.cons.DPMode;
+import com.example.rex.note.ui.widget.DatePicket.views.DatePicker;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
 import rx.Subscription;
 import rx.functions.Action1;
 
-public class CalendarFragment extends BaseFragment<CalendarFragmentPresenter> implements ICalendarView {
+public class CalendarFragment extends BaseFragment<CalendarPresenter> implements ICalendarView {
     private Subscription rxSubscription;
+    @Bind(R.id.main_dp)
+    protected DatePicker picker;
 
     @Override
     protected int getLayoutResId() {
@@ -47,7 +50,7 @@ public class CalendarFragment extends BaseFragment<CalendarFragmentPresenter> im
 
     @Override
     protected void initPresenter() {
-        presenter = new CalendarFragmentPresenter(getContext(),this);
+        presenter = new CalendarPresenter(getContext(),this);
         presenter.init();
     }
 
@@ -60,7 +63,6 @@ public class CalendarFragment extends BaseFragment<CalendarFragmentPresenter> im
         tmp.add("2015-7-16");
         DPCManager.getInstance().setDecorBG(tmp);
 
-        DatePicker picker = (DatePicker) view.findViewById(R.id.main_dp);
         picker.setDate(2015, 7);
         picker.setFestivalDisplay(true);
         picker.setTodayDisplay(false);

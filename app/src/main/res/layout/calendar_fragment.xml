@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.example.rex.note.widget.DatePicket.views.DatePicker
+    <com.example.rex.note.ui.widget.DatePicket.views.DatePicker
         android:id="@+id/main_dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
