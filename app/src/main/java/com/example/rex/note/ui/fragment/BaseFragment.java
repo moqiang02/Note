@@ -30,7 +30,6 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
 
     protected abstract void initPresenter();
 
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();

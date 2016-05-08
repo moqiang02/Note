@@ -15,6 +15,7 @@ import com.example.rex.note.presenter.MainPresenter;
 import com.example.rex.note.ui.fragment.CalendarFragment;
 import com.example.rex.note.adapter.CategoryAdapter;
 import com.example.rex.note.ui.fragment.ListFragment;
+import com.orhanobut.logger.Logger;
 
 import butterknife.Bind;
 
@@ -34,7 +35,6 @@ public class MainActivity extends ToolBarActivity implements IMainView {
 
     @Override
     protected int getLayoutResId() {
-        Log.d("rex","mainactivity");
         return R.layout.activity_main;
     }
 
@@ -46,6 +46,8 @@ public class MainActivity extends ToolBarActivity implements IMainView {
 
     @Override
     public void initView() {
+        Logger.d("rex","menu");
+        setLeftIcon(R.drawable.ic_menu);
         mDrawerLayout.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
 
         if (viewPager != null) {

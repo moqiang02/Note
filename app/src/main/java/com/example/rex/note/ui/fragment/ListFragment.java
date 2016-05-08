@@ -37,7 +37,7 @@ public class ListFragment extends BaseFragment<ListPresenter> implements
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.list_fragment;
+        return R.layout.fragment_list;
     }
 
     @Override

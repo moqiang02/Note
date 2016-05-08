@@ -25,27 +25,34 @@ import com.example.rex.note.R;
 import com.example.rex.note.iView.ICalendarView;
 import com.example.rex.note.model.entity.DPicker;
 import com.example.rex.note.presenter.CalendarPresenter;
-import com.example.rex.note.util.RxBus;
 import com.example.rex.note.ui.widget.DatePicket.bizs.calendars.DPCManager;
 import com.example.rex.note.ui.widget.DatePicket.bizs.decors.DPDecor;
 import com.example.rex.note.ui.widget.DatePicket.cons.DPMode;
 import com.example.rex.note.ui.widget.DatePicket.views.DatePicker;
+import com.example.rex.note.util.RxBus;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 import rx.Subscription;
 import rx.functions.Action1;
 
 public class CalendarFragment extends BaseFragment<CalendarPresenter> implements ICalendarView {
     private Subscription rxSubscription;
+    private CalendarPresenter presenter;
     @Bind(R.id.main_dp)
     protected DatePicker picker;
+    @OnClick(R.id.button)
+    void addClick() {
+        presenter.toAddDiaryActivity();
+    }
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.calendar_fragment;
+        return R.layout.fragment_calendar;
     }
 
     @Override
@@ -57,7 +64,7 @@ public class CalendarFragment extends BaseFragment<CalendarPresenter> implements
 
     public void initView() {
         // 自定义背景绘制示例 Example of custom date's background
-        List<String> tmp = new ArrayList<>();
+        final List<String> tmp = new ArrayList<>();
         tmp.add("2015-7-1");
         tmp.add("2015-7-8");
         tmp.add("2015-7-16");
@@ -79,7 +86,12 @@ public class CalendarFragment extends BaseFragment<CalendarPresenter> implements
         picker.setOnDatePickedListener(new DatePicker.OnDatePickedListener() {
             @Override
             public void onDatePicked(String date) {
-
+                //当前日期已有日记
+                if (tmp.contains(date)){
+                    Logger.d("rex", "当前日期已有日记");
+                }else{
+                    Logger.d("rex", "ss");
+                }
             }
         });
 
@@ -99,6 +111,8 @@ public class CalendarFragment extends BaseFragment<CalendarPresenter> implements
                         });
 
     }
+
+
 
 
 }
