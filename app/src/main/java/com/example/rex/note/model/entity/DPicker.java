@@ -5,8 +5,10 @@ package com.example.rex.note.model.entity;
  */
 public class DPicker {
     public int i;
+    public String type;
 
-    public DPicker(int i) {
+    public DPicker(int i, String type) {
         this.i = i;
+        this.type = type;
     }
 }

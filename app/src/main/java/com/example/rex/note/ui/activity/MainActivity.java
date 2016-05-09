@@ -46,8 +46,6 @@ public class MainActivity extends ToolBarActivity implements IMainView {
 
     @Override
     public void initView() {
-        Logger.d("rex","menu");
-        setLeftIcon(R.drawable.ic_menu);
         mDrawerLayout.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
 
         if (viewPager != null) {
@@ -92,6 +90,12 @@ public class MainActivity extends ToolBarActivity implements IMainView {
     }
 
     @Override
+    public void setBar(){
+        super.setBar();
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+    }
+
+    @Override
     public void showProgress() {
 
     }
@@ -110,6 +114,7 @@ public class MainActivity extends ToolBarActivity implements IMainView {
     public void showNoMoreData() {
 
     }
+
 
 
 }

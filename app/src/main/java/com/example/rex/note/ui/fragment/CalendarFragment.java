@@ -33,6 +33,7 @@ import com.example.rex.note.util.RxBus;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.Bind;
@@ -43,11 +44,15 @@ import rx.functions.Action1;
 public class CalendarFragment extends BaseFragment<CalendarPresenter> implements ICalendarView {
     private Subscription rxSubscription;
     private CalendarPresenter presenter;
+    private int currYear, currMonth, currDay;
+    private String diaryDate;
+    List<String> dateList = new ArrayList<>();
     @Bind(R.id.main_dp)
     protected DatePicker picker;
+
     @OnClick(R.id.button)
     void addClick() {
-        presenter.toAddDiaryActivity();
+        presenter.toAddDiaryActivity(diaryDate);
     }
 
     @Override
@@ -57,22 +62,25 @@ public class CalendarFragment extends BaseFragment<CalendarPresenter> implements
 
     @Override
     protected void initPresenter() {
-        presenter = new CalendarPresenter(getContext(),this);
+        presenter = new CalendarPresenter(getContext(), this);
         presenter.init();
     }
 
 
     public void initView() {
+        Calendar c = Calendar.getInstance();
+        currYear = c.get(Calendar.YEAR);
+        currMonth = c.get(Calendar.MONTH) + 1;
+        currDay = c.get(Calendar.DAY_OF_MONTH);
         // 自定义背景绘制示例 Example of custom date's background
-        final List<String> tmp = new ArrayList<>();
-        tmp.add("2015-7-1");
-        tmp.add("2015-7-8");
-        tmp.add("2015-7-16");
-        DPCManager.getInstance().setDecorBG(tmp);
+        picker.setDate(2016, currMonth);
+        dateList.add("2016-3-15");
+        dateList.add("2016-3-16");
+        DPCManager.getInstance().setDecorBG(dateList);
 
-        picker.setDate(2015, 7);
+
         picker.setFestivalDisplay(true);
-        picker.setTodayDisplay(false);
+        picker.setTodayDisplay(true);
         picker.setHolidayDisplay(false);
         picker.setDeferredDisplay(false);
         picker.setMode(DPMode.SINGLE);
@@ -87,10 +95,12 @@ public class CalendarFragment extends BaseFragment<CalendarPresenter> implements
             @Override
             public void onDatePicked(String date) {
                 //当前日期已有日记
-                if (tmp.contains(date)){
+                if (dateList.contains(date)) {
                     Logger.d("rex", "当前日期已有日记");
-                }else{
-                    Logger.d("rex", "ss");
+
+
+                } else {
+                    diaryDate = date;
                 }
             }
         });
@@ -99,8 +109,50 @@ public class CalendarFragment extends BaseFragment<CalendarPresenter> implements
                 .subscribe(new Action1<DPicker>() {
                                @Override
                                public void call(DPicker dPicker) {
+                                   String type = dPicker.type;
                                    int i = dPicker.i;
-                                   Log.d("rex", i + "**");
+                                   dateList.clear();
+                                   dateList.add("2016-6-1");
+                                   dateList.add("2017-6-2");
+                                   DPCManager.getInstance().setDecorBG(dateList);
+                                   picker.setDPDecor(new DPDecor() {
+                                       @Override
+                                       public void drawDecorBG(Canvas canvas, Rect rect, Paint paint) {
+                                           paint.setColor(getResources().getColor(R.color.fen));
+                                           canvas.drawCircle(rect.centerX(), rect.centerY(), rect.width() / 2F, paint);
+                                       }
+                                   });
+                                   Log.d("rex", "zzzzzz");
+/*                                   DaoSession daoSession = App.getDaoSession();
+                                   DiaryDao diaryDao = daoSession.getDiaryDao();
+//                                   if (type.equals("month")) {
+                                   Query query = diaryDao.queryBuilder()
+                                           .where(DiaryDao.Properties.Year.eq(currYear))
+                                           .where(DiaryDao.Properties.Month.eq(currMonth))
+                                           .build();
+                                   List<Diary> diarys = query.list();
+                                   for (Diary item : diarys) {
+                                       dateList.add(item.getDate());
+                                       Logger.d(dateList.get(0));
+                                       Logger.d(dateList.get(1));
+
+
+                                   }
+                                   dateList.clear();
+                                   dateList.add("2015-6-5");
+                                   dateList.add("2015-6-6");
+                                   Log.d("rex","zzzzzz");
+                                   DPCManager.getInstance().setDecorBG(dateList);
+                                   picker.setDPDecor(new DPDecor() {
+                                       @Override
+                                       public void drawDecorBG(Canvas canvas, Rect rect, Paint paint) {
+                                           paint.setColor(getResources().getColor(R.color.fen));
+                                           canvas.drawCircle(rect.centerX(), rect.centerY(), rect.width() / 2F, paint);
+                                       }
+                                   });
+//                                   } else {
+//
+//                                   }*/
                                }
                            },
                         new Action1<Throwable>() {
@@ -111,8 +163,6 @@ public class CalendarFragment extends BaseFragment<CalendarPresenter> implements
                         });
 
     }
-
-
 
 
 }

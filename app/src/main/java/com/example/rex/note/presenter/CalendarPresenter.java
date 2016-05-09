@@ -14,8 +14,9 @@ public class CalendarPresenter extends BasePresenter<ICalendarView> {
         super(context, iView);
     }
 
-    public void toAddDiaryActivity() {
+    public void toAddDiaryActivity(String date) {
         Intent intent = new Intent(context, AddDiaryActivity.class);
+        intent.putExtra("date",date);
         context.startActivity(intent);
     }
 

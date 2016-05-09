@@ -42,12 +42,15 @@ public abstract class ToolBarActivity extends BaseActivity {
         actionBar = getSupportActionBar();
         if (actionBar != null) {
             Logger.d("rex", "toolbar");
-//            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setDisplayHomeAsUpEnabled(canBack());
+            setBar();
         } else {
             Logger.d("rex", "no- toolbar");
         }
+    }
+
+    protected void setBar() {
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(canBack());
     }
 
 //    protected void hideOrShowToolBar() {
@@ -65,10 +68,6 @@ public abstract class ToolBarActivity extends BaseActivity {
         return true;
     }
 
-    public void setLeftIcon(int res) {
-        if (actionBar != null) {
-            actionBar.setHomeAsUpIndicator(res);
-        }
-    }
+
 
 }

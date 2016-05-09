@@ -25,7 +25,9 @@ public class DiaryDao extends AbstractDao<Diary, Long> {
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Date = new Property(1, String.class, "date", false, "DATE");
-        public final static Property Content = new Property(2, String.class, "content", false, "CONTENT");
+        public final static Property Month = new Property(2, Integer.class, "month", false, "MONTH");
+        public final static Property Year = new Property(3, Integer.class, "year", false, "YEAR");
+        public final static Property Content = new Property(4, String.class, "content", false, "CONTENT");
     };
 
 
@@ -43,7 +45,9 @@ public class DiaryDao extends AbstractDao<Diary, Long> {
         db.execSQL("CREATE TABLE " + constraint + "\"DIARY\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
                 "\"DATE\" TEXT NOT NULL ," + // 1: date
-                "\"CONTENT\" TEXT);"); // 2: content
+                "\"MONTH\" INTEGER," + // 2: month
+                "\"YEAR\" INTEGER," + // 3: year
+                "\"CONTENT\" TEXT);"); // 4: content
     }
 
     /** Drops the underlying database table. */
@@ -63,9 +67,19 @@ public class DiaryDao extends AbstractDao<Diary, Long> {
         }
         stmt.bindString(2, entity.getDate());
  
+        Integer month = entity.getMonth();
+        if (month != null) {
+            stmt.bindLong(3, month);
+        }
+ 
+        Integer year = entity.getYear();
+        if (year != null) {
+            stmt.bindLong(4, year);
+        }
+ 
         String content = entity.getContent();
         if (content != null) {
-            stmt.bindString(3, content);
+            stmt.bindString(5, content);
         }
     }
 
@@ -81,7 +95,9 @@ public class DiaryDao extends AbstractDao<Diary, Long> {
         Diary entity = new Diary( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.getString(offset + 1), // date
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2) // content
+            cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // month
+            cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3), // year
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4) // content
         );
         return entity;
     }
@@ -91,7 +107,9 @@ public class DiaryDao extends AbstractDao<Diary, Long> {
     public void readEntity(Cursor cursor, Diary entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setDate(cursor.getString(offset + 1));
-        entity.setContent(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setMonth(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
+        entity.setYear(cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3));
+        entity.setContent(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
      }
     
     /** @inheritdoc */

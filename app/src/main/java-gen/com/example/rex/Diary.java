@@ -9,6 +9,8 @@ public class Diary {
     private Long id;
     /** Not-null value. */
     private String date;
+    private Integer month;
+    private Integer year;
     private String content;
 
     public Diary() {
@@ -18,9 +20,11 @@ public class Diary {
         this.id = id;
     }
 
-    public Diary(Long id, String date, String content) {
+    public Diary(Long id, String date, Integer month, Integer year, String content) {
         this.id = id;
         this.date = date;
+        this.month = month;
+        this.year = year;
         this.content = content;
     }
 
@@ -40,6 +44,22 @@ public class Diary {
     /** Not-null value; ensure this value is available before it is saved to the database. */
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public Integer getMonth() {
+        return month;
+    }
+
+    public void setMonth(Integer month) {
+        this.month = month;
+    }
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
     }
 
     public String getContent() {
