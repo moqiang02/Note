@@ -4,6 +4,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 
+import com.example.rex.Diary;
 import com.example.rex.note.R;
 import com.example.rex.note.iView.IAddDiaryView;
 import com.example.rex.note.presenter.AddDiaryPresenter;
@@ -32,7 +33,17 @@ public class AddDiaryActivity extends ToolBarActivity implements IAddDiaryView {
 
     @Override
     public void initView() {
-        date = (String) getIntent().getSerializableExtra("date");
+        String flag = getIntent().getStringExtra("flag");
+        if (flag.equals("add")){
+            date = (String) getIntent().getSerializableExtra("date");
+        }else{
+            Diary diary = (Diary) getIntent().getSerializableExtra("diary");
+            date = diary.getDate();
+            toolbar.setTitle(diary.getDate());
+            editText.setText(diary.getContent());
+        }
+
+
     }
 
     @Override

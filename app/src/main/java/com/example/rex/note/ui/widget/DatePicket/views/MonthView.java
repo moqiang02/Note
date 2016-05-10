@@ -115,8 +115,6 @@ public class MonthView extends View {
                                @Override
                                public void call(RxEvent.AddDiary addDiary) {
                                    Logger.d("aaa");
-                                   centerMonth = 6;
-                                   centerYear = 2016;
                                    buildRegion();
                                    computeDate();
                                    invalidate();
@@ -779,6 +777,7 @@ public class MonthView extends View {
         if (null != onDateChangeListener) {
             onDateChangeListener.onYearChange(centerYear);
             onDateChangeListener.onMonthChange(centerMonth);
+            onDateChangeListener.onChange(centerMonth,centerYear);
         }
     }
 
@@ -786,6 +785,8 @@ public class MonthView extends View {
         void onMonthChange(int month);
 
         void onYearChange(int year);
+
+        void onChange(int month, int centerYear);
     }
 
     private enum SlideMode {
