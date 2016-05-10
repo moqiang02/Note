@@ -2,13 +2,13 @@ package com.example.rex.note.ui.widget.DatePicket.bizs.calendars;
 
 import android.text.TextUtils;
 
+import com.example.rex.note.ui.widget.DatePicket.entities.DPInfo;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-
-import com.example.rex.note.ui.widget.DatePicket.entities.DPInfo;
 
 /**
  * 日期管理器
@@ -178,6 +178,9 @@ public final class DPCManager {
         Set<String> strWeekend = c.buildMonthWeekend(year, month);
 
         Set<String> decorBG = DECOR_CACHE_BG.get(year + ":" + month);
+        if (year == 2017 && month == 6) {
+            DECOR_CACHE_BG.get(year + ":" + month);
+        }
         Set<String> decorTL = DECOR_CACHE_TL.get(year + ":" + month);
         Set<String> decorT = DECOR_CACHE_T.get(year + ":" + month);
         Set<String> decorTR = DECOR_CACHE_TR.get(year + ":" + month);

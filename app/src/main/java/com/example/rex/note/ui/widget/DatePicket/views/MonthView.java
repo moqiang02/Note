@@ -22,11 +22,13 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Scroller;
 
+import com.example.rex.note.model.entity.RxEvent;
 import com.example.rex.note.ui.widget.DatePicket.bizs.calendars.DPCManager;
 import com.example.rex.note.ui.widget.DatePicket.bizs.decors.DPDecor;
 import com.example.rex.note.ui.widget.DatePicket.bizs.themes.DPTManager;
 import com.example.rex.note.ui.widget.DatePicket.cons.DPMode;
 import com.example.rex.note.ui.widget.DatePicket.entities.DPInfo;
+import com.example.rex.note.util.RxBus;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,12 +36,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import rx.Subscription;
+import rx.functions.Action1;
+
 /**
  * MonthView
  *
  * @author AigeStudio 2015-06-29
  */
 public class MonthView extends View {
+    private Subscription rxSubscription;
     private final Region[][] MONTH_REGIONS_4 = new Region[4][7];
     private final Region[][] MONTH_REGIONS_5 = new Region[5][7];
     private final Region[][] MONTH_REGIONS_6 = new Region[6][7];
@@ -279,14 +285,27 @@ public class MonthView extends View {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(final Canvas canvas) {
+        rxSubscription = RxBus.getDefault().toObserverable(RxEvent.AddDiary.class)
+            .subscribe(new Action1<RxEvent.AddDiary>() {
+                           @Override
+                           public void call(RxEvent.AddDiary addDiary) {
+                              // draw(canvas, width * indexMonth, indexYear * height, centerYear, centerMonth);
+                           }
+                       },
+                    new Action1<Throwable>() {
+                        @Override
+                        public void call(Throwable throwable) {
+                            // TODO: 处理异常
+                        }
+                    });
         canvas.drawColor(mTManager.colorBG());
 
-        draw(canvas, width * indexMonth, (indexYear - 1) * height, topYear, topMonth);
-        draw(canvas, width * (indexMonth - 1), height * indexYear, leftYear, leftMonth);
+//        draw(canvas, width * indexMonth, (indexYear - 1) * height, topYear, topMonth);
+//        draw(canvas, width * (indexMonth - 1), height * indexYear, leftYear, leftMonth);
         draw(canvas, width * indexMonth, indexYear * height, centerYear, centerMonth);
-        draw(canvas, width * (indexMonth + 1), height * indexYear, rightYear, rightMonth);
-        draw(canvas, width * indexMonth, (indexYear + 1) * height, bottomYear, bottomMonth);
+//        draw(canvas, width * (indexMonth + 1), height * indexYear, rightYear, rightMonth);
+//        draw(canvas, width * indexMonth, (indexYear + 1) * height, bottomYear, bottomMonth);
 
         drawBGCircle(canvas);
     }
@@ -815,4 +834,7 @@ public class MonthView extends View {
             MonthView.this.invalidate();
         }
     }
+
+
+
 }

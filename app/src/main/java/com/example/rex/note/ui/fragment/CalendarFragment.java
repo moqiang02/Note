@@ -21,9 +21,13 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
 
+import com.example.rex.DaoSession;
+import com.example.rex.Diary;
+import com.example.rex.DiaryDao;
+import com.example.rex.note.App;
 import com.example.rex.note.R;
 import com.example.rex.note.iView.ICalendarView;
-import com.example.rex.note.model.entity.DPicker;
+import com.example.rex.note.model.entity.RxEvent;
 import com.example.rex.note.presenter.CalendarPresenter;
 import com.example.rex.note.ui.widget.DatePicket.bizs.calendars.DPCManager;
 import com.example.rex.note.ui.widget.DatePicket.bizs.decors.DPDecor;
@@ -38,6 +42,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import de.greenrobot.dao.query.Query;
 import rx.Subscription;
 import rx.functions.Action1;
 
@@ -74,8 +79,8 @@ public class CalendarFragment extends BaseFragment<CalendarPresenter> implements
         currDay = c.get(Calendar.DAY_OF_MONTH);
         // 自定义背景绘制示例 Example of custom date's background
         picker.setDate(2016, currMonth);
-        dateList.add("2016-3-15");
-        dateList.add("2016-3-16");
+        dateList.add("2016-4-15");
+        dateList.add("2016-4-16");
         DPCManager.getInstance().setDecorBG(dateList);
 
 
@@ -105,54 +110,43 @@ public class CalendarFragment extends BaseFragment<CalendarPresenter> implements
             }
         });
 
-        rxSubscription = RxBus.getDefault().toObserverable(DPicker.class)
-                .subscribe(new Action1<DPicker>() {
+        rxSubscription = RxBus.getDefault().toObserverable(RxEvent.DPicker.class)
+                .subscribe(new Action1<RxEvent.DPicker>() {
                                @Override
-                               public void call(DPicker dPicker) {
+                               public void call(RxEvent.DPicker dPicker) {
                                    String type = dPicker.type;
                                    int i = dPicker.i;
-                                   dateList.clear();
-                                   dateList.add("2016-6-1");
-                                   dateList.add("2017-6-2");
-                                   DPCManager.getInstance().setDecorBG(dateList);
-                                   picker.setDPDecor(new DPDecor() {
-                                       @Override
-                                       public void drawDecorBG(Canvas canvas, Rect rect, Paint paint) {
-                                           paint.setColor(getResources().getColor(R.color.fen));
-                                           canvas.drawCircle(rect.centerX(), rect.centerY(), rect.width() / 2F, paint);
-                                       }
-                                   });
+//                                   dateList.clear();
+//                                   dateList.add("2016-6-2");
+//                                   dateList.add("2016-6-3");
+//                                   DPCManager.getInstance().setDecorBG(dateList);
+//                                   picker.setDPDecor(new DPDecor() {
+//                                       @Override
+//                                       public void drawDecorBG(Canvas canvas, Rect rect, Paint paint) {
+//                                           paint.setColor(getResources().getColor(R.color.fen));
+//                                           canvas.drawCircle(rect.centerX(), rect.centerY(), rect.width() / 2F, paint);
+//                                       }
+//                                   });
                                    Log.d("rex", "zzzzzz");
-/*                                   DaoSession daoSession = App.getDaoSession();
+                                   DaoSession daoSession = App.getDaoSession();
                                    DiaryDao diaryDao = daoSession.getDiaryDao();
 //                                   if (type.equals("month")) {
                                    Query query = diaryDao.queryBuilder()
                                            .where(DiaryDao.Properties.Year.eq(currYear))
-                                           .where(DiaryDao.Properties.Month.eq(currMonth))
+//                                           .where(DiaryDao.Properties.Month.eq(currMonth))
                                            .build();
                                    List<Diary> diarys = query.list();
                                    for (Diary item : diarys) {
                                        dateList.add(item.getDate());
-                                       Logger.d(dateList.get(0));
-                                       Logger.d(dateList.get(1));
 
 
                                    }
-                                   dateList.clear();
-                                   dateList.add("2015-6-5");
-                                   dateList.add("2015-6-6");
-                                   Log.d("rex","zzzzzz");
+
                                    DPCManager.getInstance().setDecorBG(dateList);
-                                   picker.setDPDecor(new DPDecor() {
-                                       @Override
-                                       public void drawDecorBG(Canvas canvas, Rect rect, Paint paint) {
-                                           paint.setColor(getResources().getColor(R.color.fen));
-                                           canvas.drawCircle(rect.centerX(), rect.centerY(), rect.width() / 2F, paint);
-                                       }
-                                   });
+
 //                                   } else {
 //
-//                                   }*/
+//                                   }
                                }
                            },
                         new Action1<Throwable>() {

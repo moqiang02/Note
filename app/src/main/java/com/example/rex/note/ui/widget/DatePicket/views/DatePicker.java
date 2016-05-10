@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.rex.note.model.entity.DPicker;
+import com.example.rex.note.model.entity.RxEvent;
 import com.example.rex.note.ui.widget.DatePicket.bizs.decors.DPDecor;
 import com.example.rex.note.ui.widget.DatePicket.bizs.languages.DPLManager;
 import com.example.rex.note.ui.widget.DatePicket.bizs.themes.DPTManager;
@@ -142,13 +142,13 @@ public class DatePicker extends LinearLayout {
         monthView.setOnDateChangeListener(new MonthView.OnDateChangeListener() {
             @Override
             public void onMonthChange(int month) {
-                RxBus.getDefault().post(new DPicker(month,"month"));
+                RxBus.getDefault().post(new RxEvent.DPicker(month,"month"));
                 tvMonth.setText(mLManager.titleMonth()[month - 1]);
             }
 
             @Override
             public void onYearChange(int year) {
-//                RxBus.getDefault().post(new DPicker(year,"year"));
+//                RxBus.getDefault().post(new RxEvent.DPicker(year,"year"));
                 String tmp = String.valueOf(year);
                 if (tmp.startsWith("-")) {
                     tmp = tmp.replace("-", mLManager.titleBC());
