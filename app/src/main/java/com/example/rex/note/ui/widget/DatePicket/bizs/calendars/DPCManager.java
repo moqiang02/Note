@@ -141,9 +141,9 @@ public final class DPCManager {
         HashMap<Integer, DPInfo[][]> dataOfYear = DATE_CACHE.get(year);
         if (null != dataOfYear && dataOfYear.size() != 0) {
             DPInfo[][] dataOfMonth = dataOfYear.get(month);
-            if (dataOfMonth != null) {
-                return dataOfMonth;
-            }
+//            if (dataOfMonth != null) {
+//                return dataOfMonth;
+//            }
             dataOfMonth = buildDPInfo(year, month);
             dataOfYear.put(month, dataOfMonth);
             return dataOfMonth;
@@ -178,9 +178,6 @@ public final class DPCManager {
         Set<String> strWeekend = c.buildMonthWeekend(year, month);
 
         Set<String> decorBG = DECOR_CACHE_BG.get(year + ":" + month);
-        if (year == 2017 && month == 6) {
-            DECOR_CACHE_BG.get(year + ":" + month);
-        }
         Set<String> decorTL = DECOR_CACHE_TL.get(year + ":" + month);
         Set<String> decorT = DECOR_CACHE_T.get(year + ":" + month);
         Set<String> decorTR = DECOR_CACHE_TR.get(year + ":" + month);

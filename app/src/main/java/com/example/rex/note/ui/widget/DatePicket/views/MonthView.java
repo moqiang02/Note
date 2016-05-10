@@ -29,6 +29,7 @@ import com.example.rex.note.ui.widget.DatePicket.bizs.themes.DPTManager;
 import com.example.rex.note.ui.widget.DatePicket.cons.DPMode;
 import com.example.rex.note.ui.widget.DatePicket.entities.DPInfo;
 import com.example.rex.note.util.RxBus;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -89,6 +90,7 @@ public class MonthView extends View {
     private float sizeTextGregorian, sizeTextFestival;
     private float offsetYFestival1, offsetYFestival2;
 
+
     private boolean isNewEvent,
             isFestivalDisplay = true,
             isHolidayDisplay = true,
@@ -107,6 +109,25 @@ public class MonthView extends View {
         }
         mScroller = new Scroller(context);
         mPaint.setTextAlign(Paint.Align.CENTER);
+
+        rxSubscription = RxBus.getDefault().toObserverable(RxEvent.AddDiary.class)
+                .subscribe(new Action1<RxEvent.AddDiary>() {
+                               @Override
+                               public void call(RxEvent.AddDiary addDiary) {
+                                   Logger.d("aaa");
+                                   centerMonth = 6;
+                                   centerYear = 2016;
+                                   buildRegion();
+                                   computeDate();
+                                   invalidate();
+                               }
+                           },
+                        new Action1<Throwable>() {
+                            @Override
+                            public void call(Throwable throwable) {
+                                // TODO: 处理异常
+                            }
+                        });
     }
 
     @Override
@@ -286,26 +307,14 @@ public class MonthView extends View {
 
     @Override
     protected void onDraw(final Canvas canvas) {
-        rxSubscription = RxBus.getDefault().toObserverable(RxEvent.AddDiary.class)
-            .subscribe(new Action1<RxEvent.AddDiary>() {
-                           @Override
-                           public void call(RxEvent.AddDiary addDiary) {
-                              // draw(canvas, width * indexMonth, indexYear * height, centerYear, centerMonth);
-                           }
-                       },
-                    new Action1<Throwable>() {
-                        @Override
-                        public void call(Throwable throwable) {
-                            // TODO: 处理异常
-                        }
-                    });
+
         canvas.drawColor(mTManager.colorBG());
 
-//        draw(canvas, width * indexMonth, (indexYear - 1) * height, topYear, topMonth);
-//        draw(canvas, width * (indexMonth - 1), height * indexYear, leftYear, leftMonth);
+        draw(canvas, width * indexMonth, (indexYear - 1) * height, topYear, topMonth);
+        draw(canvas, width * (indexMonth - 1), height * indexYear, leftYear, leftMonth);
         draw(canvas, width * indexMonth, indexYear * height, centerYear, centerMonth);
-//        draw(canvas, width * (indexMonth + 1), height * indexYear, rightYear, rightMonth);
-//        draw(canvas, width * indexMonth, (indexYear + 1) * height, bottomYear, bottomMonth);
+        draw(canvas, width * (indexMonth + 1), height * indexYear, rightYear, rightMonth);
+        draw(canvas, width * indexMonth, (indexYear + 1) * height, bottomYear, bottomMonth);
 
         drawBGCircle(canvas);
     }
