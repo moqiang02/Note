@@ -23,6 +23,10 @@
             android:label="@string/add_diary"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name=".ui.activity.ShowDiaryActivity"
+            android:label="@string/add_diary"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

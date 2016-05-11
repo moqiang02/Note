@@ -19,7 +19,10 @@ package com.example.rex.note.ui.fragment;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.Log;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.rex.DaoSession;
 import com.example.rex.Diary;
@@ -34,7 +37,6 @@ import com.example.rex.note.ui.widget.DatePicket.bizs.decors.DPDecor;
 import com.example.rex.note.ui.widget.DatePicket.cons.DPMode;
 import com.example.rex.note.ui.widget.DatePicket.views.DatePicker;
 import com.example.rex.note.util.RxBus;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -51,13 +53,28 @@ public class CalendarFragment extends BaseFragment<CalendarPresenter> implements
     private CalendarPresenter presenter;
     private int currYear, currMonth, currDay;
     private String diaryDate;
+    private Diary diary;
+    private DaoSession daoSession;
+    private DiaryDao diaryDao;
+    private Query query;
     List<String> dateList = new ArrayList<>();
     @Bind(R.id.main_dp)
     protected DatePicker picker;
+    @Bind(R.id.button)
+    protected Button button;
+    @Bind(R.id.tv)
+    protected TextView tv;
 
     @OnClick(R.id.button)
     void addClick() {
         presenter.toAddDiaryActivity(diaryDate);
+    }
+
+    @OnClick(R.id.tv)
+    void showClick(TextView v){
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("diary",diary);
+        presenter.toShowDiaryActivity(bundle);
     }
 
     @Override
@@ -77,10 +94,20 @@ public class CalendarFragment extends BaseFragment<CalendarPresenter> implements
         currYear = c.get(Calendar.YEAR);
         currMonth = c.get(Calendar.MONTH) + 1;
         currDay = c.get(Calendar.DAY_OF_MONTH);
+
+        daoSession = App.getDaoSession();
+        diaryDao = daoSession.getDiaryDao();
+
         // 自定义背景绘制示例 Example of custom date's background
-        picker.setDate(2016, currMonth);
-        dateList.add("2016-4-15");
-        dateList.add("2016-4-16");
+        picker.setDate(currYear, currMonth);
+        query = diaryDao.queryBuilder()
+                .where(DiaryDao.Properties.Year.eq(currYear))
+                .where(DiaryDao.Properties.Month.eq(currMonth))
+                .build();
+        List<Diary> diarys = query.list();
+        for (Diary item : diarys) {
+            dateList.add(item.getDate());
+        }
         DPCManager.getInstance().setDecorBG(dateList);
 
 
@@ -101,11 +128,18 @@ public class CalendarFragment extends BaseFragment<CalendarPresenter> implements
             public void onDatePicked(String date) {
                 //当前日期已有日记
                 if (dateList.contains(date)) {
-                    Logger.d("rex", "当前日期已有日记");
-
-
+                    diary = diaryDao.queryBuilder()
+                            .where(DiaryDao.Properties.Date.eq(date))
+                            .build().unique();
+                    if (diary != null) {
+                        button.setVisibility(View.GONE);
+                        tv.setVisibility(View.VISIBLE);
+                        tv.setText(diary.getContent());
+                    }
                 } else {
                     diaryDate = date;
+                    button.setVisibility(View.VISIBLE);
+                    tv.setVisibility(View.GONE);
                 }
             }
         });
@@ -114,39 +148,19 @@ public class CalendarFragment extends BaseFragment<CalendarPresenter> implements
                 .subscribe(new Action1<RxEvent.DPicker>() {
                                @Override
                                public void call(RxEvent.DPicker dPicker) {
-                                   String type = dPicker.type;
-                                   int i = dPicker.i;
-//                                   dateList.clear();
-//                                   dateList.add("2016-6-2");
-//                                   dateList.add("2016-6-3");
-//                                   DPCManager.getInstance().setDecorBG(dateList);
-//                                   picker.setDPDecor(new DPDecor() {
-//                                       @Override
-//                                       public void drawDecorBG(Canvas canvas, Rect rect, Paint paint) {
-//                                           paint.setColor(getResources().getColor(R.color.fen));
-//                                           canvas.drawCircle(rect.centerX(), rect.centerY(), rect.width() / 2F, paint);
-//                                       }
-//                                   });
-                                   Log.d("rex", "zzzzzz");
-                                   DaoSession daoSession = App.getDaoSession();
-                                   DiaryDao diaryDao = daoSession.getDiaryDao();
-//                                   if (type.equals("month")) {
-                                   Query query = diaryDao.queryBuilder()
-                                           .where(DiaryDao.Properties.Year.eq(currYear))
-//                                           .where(DiaryDao.Properties.Month.eq(currMonth))
+                                   int month = dPicker.month;
+                                   int year = dPicker.year;
+                                   query = diaryDao.queryBuilder()
+                                           .where(DiaryDao.Properties.Year.eq(year))
+                                           .where(DiaryDao.Properties.Month.eq(month))
                                            .build();
                                    List<Diary> diarys = query.list();
+                                   dateList.clear();
                                    for (Diary item : diarys) {
                                        dateList.add(item.getDate());
-
-
                                    }
-
                                    DPCManager.getInstance().setDecorBG(dateList);
 
-//                                   } else {
-//
-//                                   }
                                }
                            },
                         new Action1<Throwable>() {

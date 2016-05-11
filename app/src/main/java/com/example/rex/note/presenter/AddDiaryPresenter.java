@@ -10,6 +10,8 @@ import com.example.rex.note.iView.IAddDiaryView;
 import com.example.rex.note.model.entity.RxEvent;
 import com.example.rex.note.util.RxBus;
 
+import java.util.List;
+
 
 /**
  * Created by Rex on 2016/5/7.
@@ -17,6 +19,7 @@ import com.example.rex.note.util.RxBus;
 public class AddDiaryPresenter extends BasePresenter<IAddDiaryView> {
     private DaoSession daoSession;
     private DiaryDao diaryDao;
+
     public AddDiaryPresenter(Context context, IAddDiaryView iView) {
         super(context, iView);
         daoSession = App.getDaoSession();
@@ -25,18 +28,22 @@ public class AddDiaryPresenter extends BasePresenter<IAddDiaryView> {
 
     @Override
     public void release() {
-        if (subscription !=null && subscription.isUnsubscribed()){
+        if (subscription != null && subscription.isUnsubscribed()) {
             subscription.unsubscribe();
         }
     }
 
-    public void saveDiary(String date,String content) {
-        String[] dateArr = date.split("-");
-        Diary diary = new Diary(null,date,Integer.parseInt(dateArr[1]),Integer.parseInt(dateArr[0]),content);
-        long l = diaryDao.insert(diary);
-        if (l > 0){
-            RxBus.getDefault().post(new RxEvent.AddDiary(true));
-            iView.finishActivity();
+    public void saveDiary(Diary diary) {
+        List<Diary> diaries = diaryDao.queryBuilder().where(DiaryDao.Properties.Date.eq(diary.getDate())).build().list();
+        if (diaries.size() <= 0) {
+            diaryDao.insert(diary);
+        } else {
+            Diary diary1 = diaries.get(0);
+            diary1.setContent(diary.getContent());
+            diaryDao.insertOrReplace(diary1);
         }
+        RxBus.getDefault().post(new RxEvent.AddDiary(true));
+        iView.finishActivity();
+
     }
 }

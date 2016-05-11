@@ -142,18 +142,21 @@ public class DatePicker extends LinearLayout {
         monthView.setOnDateChangeListener(new MonthView.OnDateChangeListener() {
             @Override
             public void onMonthChange(int month) {
-                RxBus.getDefault().post(new RxEvent.DPicker(month,"month"));
                 tvMonth.setText(mLManager.titleMonth()[month - 1]);
             }
 
             @Override
             public void onYearChange(int year) {
-//                RxBus.getDefault().post(new RxEvent.DPicker(year,"year"));
                 String tmp = String.valueOf(year);
                 if (tmp.startsWith("-")) {
                     tmp = tmp.replace("-", mLManager.titleBC());
                 }
                 tvYear.setText(tmp);
+            }
+
+            @Override
+            public void onChange(int month, int year) {
+                RxBus.getDefault().post(new RxEvent.DPicker(month,year));
             }
         });
         addView(monthView, llParams);

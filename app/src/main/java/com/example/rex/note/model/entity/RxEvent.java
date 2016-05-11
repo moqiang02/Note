@@ -5,12 +5,12 @@ package com.example.rex.note.model.entity;
  */
 public class RxEvent {
     public static class DPicker{
-        public int i;
-        public String type;
+        public int month;
+        public int year;
 
-        public DPicker(int i, String type) {
-            this.i = i;
-            this.type = type;
+        public DPicker(int month, int year) {
+            this.month = month;
+            this.year = year;
         }
     }
 
