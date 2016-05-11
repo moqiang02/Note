@@ -66,12 +66,12 @@ public class CalendarFragment extends BaseFragment<CalendarPresenter> implements
     protected TextView tv;
 
     @OnClick(R.id.button)
-    void addClick() {
+    protected void addClick() {
         presenter.toAddDiaryActivity(diaryDate);
     }
 
     @OnClick(R.id.tv)
-    void showClick(TextView v){
+    protected void showClick(TextView v){
         Bundle bundle = new Bundle();
         bundle.putSerializable("diary",diary);
         presenter.toShowDiaryActivity(bundle);

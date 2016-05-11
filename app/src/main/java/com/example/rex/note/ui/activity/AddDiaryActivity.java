@@ -2,17 +2,21 @@ package com.example.rex.note.ui.activity;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.GridLayout;
 
 import com.example.rex.Diary;
 import com.example.rex.note.R;
 import com.example.rex.note.iView.IAddDiaryView;
 import com.example.rex.note.presenter.AddDiaryPresenter;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.example.rex.note.ui.widget.ShowToast;
+import com.github.clans.fab.FloatingActionMenu;
 
 import java.util.Calendar;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * Created by Rex on 2016/5/7.
@@ -22,6 +26,21 @@ public class AddDiaryActivity extends ToolBarActivity implements IAddDiaryView {
     private String date;
     @Bind(R.id.editText)
     protected EditText editText;
+    @Bind(R.id.menu_yellow)
+    protected FloatingActionMenu fbm;
+    @Bind(R.id.gl_expression)
+    protected GridLayout glExpression;
+    @OnClick(R.id.weather)
+    protected void weather(){
+        fbm.toggle(true);
+        ShowToast.showShort("weather");
+    }
+    @OnClick(R.id.expression)
+    protected void expression(){
+        fbm.toggle(true);
+        ShowToast.showShort("expression");
+        glExpression.setVisibility(View.VISIBLE);
+    }
 
     @Override
     protected int getLayoutResId() {
@@ -47,7 +66,6 @@ public class AddDiaryActivity extends ToolBarActivity implements IAddDiaryView {
         }
 
 
-        final FloatingActionsMenu menuMultipleActions = (FloatingActionsMenu) findViewById(R.id.multiple_actions);
     }
 
     @Override

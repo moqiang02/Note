@@ -2,15 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/clear_content"
+        android:icon="@drawable/eraser"
+        android:orderInCategory="100"
+        android:title="清除"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/save_diary"
         android:icon="@drawable/save"
         android:orderInCategory="100"
         android:title="保存"
-        app:showAsAction="ifRoom"/>
-    <item
-        android:id="@+id/clear_content"
-        android:icon="@drawable/eraser"
-        android:title="清除"
-        android:orderInCategory="100"
-        app:showAsAction="always"/>
+        app:showAsAction="ifRoom" />
 </menu>
