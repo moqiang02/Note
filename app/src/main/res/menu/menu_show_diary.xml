@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/edit_diary"
-        android:icon="@mipmap/ic_save"
+        android:icon="@drawable/edit"
         android:orderInCategory="100"
         android:title="编辑"
         app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/del_diary"
-        android:icon="@mipmap/ic_share"
+        android:icon="@drawable/delete"
         android:title="删除"
         android:orderInCategory="100"
         app:showAsAction="always"/>

@@ -57,7 +57,7 @@ public class CalendarFragment extends BaseFragment<CalendarPresenter> implements
     private DaoSession daoSession;
     private DiaryDao diaryDao;
     private Query query;
-    List<String> dateList = new ArrayList<>();
+    private List<String> dateList = new ArrayList<>();
     @Bind(R.id.main_dp)
     protected DatePicker picker;
     @Bind(R.id.button)
@@ -110,7 +110,6 @@ public class CalendarFragment extends BaseFragment<CalendarPresenter> implements
         }
         DPCManager.getInstance().setDecorBG(dateList);
 
-
         picker.setFestivalDisplay(true);
         picker.setTodayDisplay(true);
         picker.setHolidayDisplay(false);
@@ -127,6 +126,7 @@ public class CalendarFragment extends BaseFragment<CalendarPresenter> implements
             @Override
             public void onDatePicked(String date) {
                 //当前日期已有日记
+                diaryDate = date;
                 if (dateList.contains(date)) {
                     diary = diaryDao.queryBuilder()
                             .where(DiaryDao.Properties.Date.eq(date))
@@ -137,7 +137,6 @@ public class CalendarFragment extends BaseFragment<CalendarPresenter> implements
                         tv.setText(diary.getContent());
                     }
                 } else {
-                    diaryDate = date;
                     button.setVisibility(View.VISIBLE);
                     tv.setVisibility(View.GONE);
                 }
@@ -161,6 +160,19 @@ public class CalendarFragment extends BaseFragment<CalendarPresenter> implements
                                    }
                                    DPCManager.getInstance().setDecorBG(dateList);
 
+                                   if (dateList.contains(diaryDate)) {
+                                       diary = diaryDao.queryBuilder()
+                                               .where(DiaryDao.Properties.Date.eq(diaryDate))
+                                               .build().unique();
+                                       if (diary != null) {
+                                           button.setVisibility(View.GONE);
+                                           tv.setVisibility(View.VISIBLE);
+                                           tv.setText(diary.getContent());
+                                       }
+                                   } else {
+                                       button.setVisibility(View.VISIBLE);
+                                       tv.setVisibility(View.GONE);
+                                   }
                                }
                            },
                         new Action1<Throwable>() {

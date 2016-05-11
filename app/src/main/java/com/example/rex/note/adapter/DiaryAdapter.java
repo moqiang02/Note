@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.rex.Diary;
 import com.example.rex.note.R;
-import com.example.rex.note.model.entity.Diary;
 
 import java.util.List;
 
@@ -43,8 +43,8 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.DiaryHolder>
         Diary diary = list.get(position);
         holder.card.setTag(diary);
 
-        holder.date.setText(diary.date);
-        holder.content.setText(diary.content);
+        holder.date.setText(diary.getDate());
+        holder.content.setText(diary.getContent());
     }
 
     @Override

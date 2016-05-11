@@ -3,6 +3,7 @@
 package com.example.rex.note;
 
 import android.app.Application;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.EditText;
 
@@ -11,6 +12,7 @@ import com.example.rex.DaoSession;
 
 public class App extends Application {
     private static App INSTANCE;
+    private static Context context;
     private static DaoSession daoSession;
     private SQLiteDatabase db;
     private EditText editText;
@@ -21,6 +23,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         INSTANCE = this;
+        context = getApplicationContext();
         setupDatabase();
     }
 
@@ -42,5 +45,9 @@ public class App extends Application {
 
     public static DaoSession getDaoSession(){
         return daoSession;
+    }
+
+    public static Context getContext() {
+        return context;
     }
 }

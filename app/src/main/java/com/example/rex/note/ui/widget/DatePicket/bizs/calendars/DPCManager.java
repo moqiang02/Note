@@ -72,6 +72,7 @@ public final class DPCManager {
      * @param date 日期列表 List of date
      */
     public void setDecorBG(List<String> date) {
+        DECOR_CACHE_BG.clear();//rex
         setDecor(date, DECOR_CACHE_BG);
     }
 

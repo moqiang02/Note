@@ -21,4 +21,11 @@ public class RxEvent {
         }
 
     }
+
+    public static class DeleteDiary {
+        public boolean b;
+        public DeleteDiary(boolean b){
+            this.b = b;
+        }
+    }
 }

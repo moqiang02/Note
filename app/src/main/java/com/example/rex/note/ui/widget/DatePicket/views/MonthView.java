@@ -29,7 +29,6 @@ import com.example.rex.note.ui.widget.DatePicket.bizs.themes.DPTManager;
 import com.example.rex.note.ui.widget.DatePicket.cons.DPMode;
 import com.example.rex.note.ui.widget.DatePicket.entities.DPInfo;
 import com.example.rex.note.util.RxBus;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -114,10 +113,20 @@ public class MonthView extends View {
                 .subscribe(new Action1<RxEvent.AddDiary>() {
                                @Override
                                public void call(RxEvent.AddDiary addDiary) {
-                                   Logger.d("aaa");
-                                   buildRegion();
                                    computeDate();
-                                   invalidate();
+                               }
+                           },
+                        new Action1<Throwable>() {
+                            @Override
+                            public void call(Throwable throwable) {
+                                // TODO: 处理异常
+                            }
+                        });
+        rxSubscription = RxBus.getDefault().toObserverable(RxEvent.DeleteDiary.class)
+                .subscribe(new Action1<RxEvent.DeleteDiary>() {
+                               @Override
+                               public void call(RxEvent.DeleteDiary dPicker) {
+                                   computeDate();
                                }
                            },
                         new Action1<Throwable>() {
