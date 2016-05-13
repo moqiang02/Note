@@ -30,7 +30,9 @@ import butterknife.OnClick;
  */
 public class AddDiaryActivity extends ToolBarActivity implements IAddDiaryView {
     private AddDiaryPresenter presenter;
+    private Calendar c;
     private String date;
+    private int emotion, weather;
     @Bind(R.id.editText)
     protected EditText editText;
     @Bind(R.id.menu_yellow)
@@ -47,8 +49,8 @@ public class AddDiaryActivity extends ToolBarActivity implements IAddDiaryView {
         faceChoice.setVisibility(View.GONE);
     }
 
-    @OnClick(R.id.expression)
-    protected void expression() {
+    @OnClick(R.id.emotion)
+    protected void emotion() {
         fbm.toggle(true);
         weatherChoice.setVisibility(View.GONE);
         faceChoice.setVisibility(View.VISIBLE);
@@ -99,6 +101,7 @@ public class AddDiaryActivity extends ToolBarActivity implements IAddDiaryView {
         weatherChoice.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int postion, long id) {
+                weather = postion + 1;
                 LinearLayout linearLayout = (LinearLayout) view;
                 final ImageView img = (ImageView) linearLayout.getChildAt(0);
                 simple.notifyDataSetChanged();
@@ -106,9 +109,10 @@ public class AddDiaryActivity extends ToolBarActivity implements IAddDiaryView {
                     @Override
                     public void run() {
                         img.setImageResource(clickWeathers[postion]);
+                        weatherChoice.setVisibility(View.GONE);
                     }
                 });
-                weatherChoice.setVisibility(View.GONE);
+//                weatherChoice.setVisibility(View.GONE);
             }
         });
         final int[] imgfaces = new int[]{
@@ -133,6 +137,7 @@ public class AddDiaryActivity extends ToolBarActivity implements IAddDiaryView {
         faceChoice.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int postion, long id) {
+                emotion = postion + 1;
                 LinearLayout linearLayout = (LinearLayout) view;
                 final ImageView img = (ImageView) linearLayout.getChildAt(0);
                 simple2.notifyDataSetChanged();
@@ -140,9 +145,9 @@ public class AddDiaryActivity extends ToolBarActivity implements IAddDiaryView {
                     @Override
                     public void run() {
                         img.setImageResource(clickfaces[postion]);
+                        faceChoice.setVisibility(View.GONE);
                     }
                 });
-                faceChoice.setVisibility(View.GONE);
             }
         });
 
@@ -157,15 +162,17 @@ public class AddDiaryActivity extends ToolBarActivity implements IAddDiaryView {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        c = Calendar.getInstance();
         switch (item.getItemId()) {
             case R.id.save_diary:
                 String diaryText = editText.getText().toString();
+                String time = "00:00:00";
                 if (date == null) {//没选择日期时，默认当天
-                    Calendar c = Calendar.getInstance();
                     date = c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH);
+                    time = c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE) + ":" + c.get(Calendar.SECOND);
                 }
                 String[] dateArr = date.split("-");
-                Diary diary = new Diary(null, date, Integer.valueOf(dateArr[1]), Integer.valueOf(dateArr[0]), diaryText);
+                Diary diary = new Diary(null, date, diaryText, emotion, weather, Integer.valueOf(dateArr[0]), Integer.valueOf(dateArr[1]), time, 0);
                 presenter.saveDiary(diary);
                 break;
             case R.id.clear_content:

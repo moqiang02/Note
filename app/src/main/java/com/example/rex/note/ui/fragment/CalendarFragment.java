@@ -73,7 +73,7 @@ public class CalendarFragment extends BaseFragment<CalendarPresenter> implements
     @OnClick(R.id.tv)
     protected void showClick(TextView v){
         Bundle bundle = new Bundle();
-        bundle.putSerializable("diary",diary);
+        bundle.putSerializable("diary", diary);
         presenter.toShowDiaryActivity(bundle);
     }
 
