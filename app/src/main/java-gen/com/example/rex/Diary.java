@@ -12,9 +12,14 @@ public class Diary implements Serializable {
     private Long id;
     /** Not-null value. */
     private String date;
-    private Integer month;
-    private Integer year;
+    /** Not-null value. */
     private String content;
+    private Integer emotion;
+    private Integer weather;
+    private int year;
+    private int month;
+    private String time;
+    private Integer hidden;
 
     public Diary() {
     }
@@ -23,12 +28,16 @@ public class Diary implements Serializable {
         this.id = id;
     }
 
-    public Diary(Long id, String date, Integer month, Integer year, String content) {
+    public Diary(Long id, String date, String content, Integer emotion, Integer weather, int year, int month, String time, Integer hidden) {
         this.id = id;
         this.date = date;
-        this.month = month;
-        this.year = year;
         this.content = content;
+        this.emotion = emotion;
+        this.weather = weather;
+        this.year = year;
+        this.month = month;
+        this.time = time;
+        this.hidden = hidden;
     }
 
     public Long getId() {
@@ -49,28 +58,62 @@ public class Diary implements Serializable {
         this.date = date;
     }
 
-    public Integer getMonth() {
-        return month;
-    }
-
-    public void setMonth(Integer month) {
-        this.month = month;
-    }
-
-    public Integer getYear() {
-        return year;
-    }
-
-    public void setYear(Integer year) {
-        this.year = year;
-    }
-
+    /** Not-null value. */
     public String getContent() {
         return content;
     }
 
+    /** Not-null value; ensure this value is available before it is saved to the database. */
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Integer getEmotion() {
+        return emotion;
+    }
+
+    public void setEmotion(Integer emotion) {
+        this.emotion = emotion;
+    }
+
+    public Integer getWeather() {
+        return weather;
+    }
+
+    public void setWeather(Integer weather) {
+        this.weather = weather;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public Integer getHidden() {
+        return hidden;
+    }
+
+    public void setHidden(Integer hidden) {
+        this.hidden = hidden;
     }
 
 }
