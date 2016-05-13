@@ -43,6 +43,7 @@ public class AddDiaryActivity extends ToolBarActivity implements IAddDiaryView {
             R.drawable.btn_face_1_click, R.drawable.btn_face_2_click, R.drawable.btn_face_3_click,
             R.drawable.btn_face_4_click, R.drawable.btn_face_5_click, R.drawable.btn_face_6_click
     };
+    private String[] week;
     @Bind(R.id.editText)
     protected EditText editText;
     @Bind(R.id.menu_yellow)
@@ -61,9 +62,9 @@ public class AddDiaryActivity extends ToolBarActivity implements IAddDiaryView {
             weatherChoice.post(new Runnable() {
                 @Override
                 public void run() {
-                    LinearLayout l = (LinearLayout) weatherChoice.getChildAt(weather - 1);
+                    LinearLayout l = (LinearLayout) weatherChoice.getChildAt(weather);
                     ImageView img = (ImageView) l.getChildAt(0);
-                    img.setImageResource(clickWeathers[weather - 1]);
+                    img.setImageResource(clickWeathers[weather]);
                 }
             });
         }
@@ -78,9 +79,9 @@ public class AddDiaryActivity extends ToolBarActivity implements IAddDiaryView {
             faceChoice.post(new Runnable() {
                 @Override
                 public void run() {
-                    LinearLayout l = (LinearLayout) faceChoice.getChildAt(emotion - 1);
+                    LinearLayout l = (LinearLayout) faceChoice.getChildAt(emotion);
                     ImageView img = (ImageView) l.getChildAt(0);
-                    img.setImageResource(clickfaces[emotion - 1]);
+                    img.setImageResource(clickfaces[emotion]);
                 }
             });
         }
@@ -105,13 +106,14 @@ public class AddDiaryActivity extends ToolBarActivity implements IAddDiaryView {
 
     @Override
     public void initView() {
+        week = this.getResources().getStringArray(R.array.week);
         flag = getIntent().getStringExtra("flag");
         if (flag.equals("add")) {//添加
             date = (String) getIntent().getSerializableExtra("date");
         } else {//修改
             diary = (Diary) getIntent().getSerializableExtra("diary");
             date = diary.getDate();
-            toolbar.setTitle(diary.getDate());
+            toolbar.setTitle(diary.getDate() + " (" + week[diary.getWeek()] + ")");
             editText.setText(diary.getContent());
             emotion = diary.getEmotion();
             weather = diary.getWeather();
@@ -136,7 +138,7 @@ public class AddDiaryActivity extends ToolBarActivity implements IAddDiaryView {
         weatherChoice.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int postion, long id) {
-                weather = postion + 1;
+                weather = postion;
                 LinearLayout linearLayout = (LinearLayout) view;
                 final ImageView img = (ImageView) linearLayout.getChildAt(0);
                 simple.notifyDataSetChanged();
@@ -169,7 +171,7 @@ public class AddDiaryActivity extends ToolBarActivity implements IAddDiaryView {
         faceChoice.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int postion, long id) {
-                emotion = postion + 1;
+                emotion = postion;
                 LinearLayout linearLayout = (LinearLayout) view;
                 final ImageView img = (ImageView) linearLayout.getChildAt(0);
                 simple2.notifyDataSetChanged();
