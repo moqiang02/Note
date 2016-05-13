@@ -18,6 +18,7 @@ public class Diary implements Serializable {
     private Integer weather;
     private int year;
     private int month;
+    private int week;
     private String time;
     private Integer hidden;
 
@@ -28,7 +29,7 @@ public class Diary implements Serializable {
         this.id = id;
     }
 
-    public Diary(Long id, String date, String content, Integer emotion, Integer weather, int year, int month, String time, Integer hidden) {
+    public Diary(Long id, String date, String content, Integer emotion, Integer weather, int year, int month, int week, String time, Integer hidden) {
         this.id = id;
         this.date = date;
         this.content = content;
@@ -36,6 +37,7 @@ public class Diary implements Serializable {
         this.weather = weather;
         this.year = year;
         this.month = month;
+        this.week = week;
         this.time = time;
         this.hidden = hidden;
     }
@@ -98,6 +100,14 @@ public class Diary implements Serializable {
 
     public void setMonth(int month) {
         this.month = month;
+    }
+
+    public int getWeek() {
+        return week;
+    }
+
+    public void setWeek(int week) {
+        this.week = week;
     }
 
     public String getTime() {

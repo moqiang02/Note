@@ -31,8 +31,18 @@ import butterknife.OnClick;
 public class AddDiaryActivity extends ToolBarActivity implements IAddDiaryView {
     private AddDiaryPresenter presenter;
     private Calendar c;
+    private Diary diary = null;
     private String date;
+    private String flag;
     private int emotion, weather;
+    private int[] clickWeathers = new int[]{
+            R.drawable.btn_weather_1_click, R.drawable.btn_weather_2_click, R.drawable.btn_weather_3_click,
+            R.drawable.btn_weather_4_click, R.drawable.btn_weather_5_click, R.drawable.btn_weather_6_click
+    };
+    private int[] clickfaces = new int[]{
+            R.drawable.btn_face_1_click, R.drawable.btn_face_2_click, R.drawable.btn_face_3_click,
+            R.drawable.btn_face_4_click, R.drawable.btn_face_5_click, R.drawable.btn_face_6_click
+    };
     @Bind(R.id.editText)
     protected EditText editText;
     @Bind(R.id.menu_yellow)
@@ -47,6 +57,16 @@ public class AddDiaryActivity extends ToolBarActivity implements IAddDiaryView {
         fbm.toggle(true);
         weatherChoice.setVisibility(View.VISIBLE);
         faceChoice.setVisibility(View.GONE);
+        if (weather > 0) {
+            weatherChoice.post(new Runnable() {
+                @Override
+                public void run() {
+                    LinearLayout l = (LinearLayout) weatherChoice.getChildAt(weather - 1);
+                    ImageView img = (ImageView) l.getChildAt(0);
+                    img.setImageResource(clickWeathers[weather - 1]);
+                }
+            });
+        }
     }
 
     @OnClick(R.id.emotion)
@@ -54,6 +74,22 @@ public class AddDiaryActivity extends ToolBarActivity implements IAddDiaryView {
         fbm.toggle(true);
         weatherChoice.setVisibility(View.GONE);
         faceChoice.setVisibility(View.VISIBLE);
+        if (emotion > 0) {
+            faceChoice.post(new Runnable() {
+                @Override
+                public void run() {
+                    LinearLayout l = (LinearLayout) faceChoice.getChildAt(emotion - 1);
+                    ImageView img = (ImageView) l.getChildAt(0);
+                    img.setImageResource(clickfaces[emotion - 1]);
+                }
+            });
+        }
+    }
+
+    @OnClick(R.id.editText)
+    protected void click() {
+        faceChoice.setVisibility(View.GONE);
+        weatherChoice.setVisibility(View.GONE);
     }
 
     @Override
@@ -69,24 +105,23 @@ public class AddDiaryActivity extends ToolBarActivity implements IAddDiaryView {
 
     @Override
     public void initView() {
-        String flag = getIntent().getStringExtra("flag");
-        if (flag.equals("add")) {
+        flag = getIntent().getStringExtra("flag");
+        if (flag.equals("add")) {//添加
             date = (String) getIntent().getSerializableExtra("date");
-        } else {
-            Diary diary = (Diary) getIntent().getSerializableExtra("diary");
+        } else {//修改
+            diary = (Diary) getIntent().getSerializableExtra("diary");
             date = diary.getDate();
             toolbar.setTitle(diary.getDate());
             editText.setText(diary.getContent());
+            emotion = diary.getEmotion();
+            weather = diary.getWeather();
         }
 
         final int[] imgWeathers = new int[]{
                 R.drawable.btn_create_weather_1, R.drawable.btn_create_weather_2, R.drawable.btn_create_weather_3,
                 R.drawable.btn_create_weather_4, R.drawable.btn_create_weather_5, R.drawable.btn_create_weather_6
         };
-        final int[] clickWeathers = new int[]{
-                R.drawable.btn_weather_1_click, R.drawable.btn_weather_2_click, R.drawable.btn_weather_3_click,
-                R.drawable.btn_weather_4_click, R.drawable.btn_weather_5_click, R.drawable.btn_weather_6_click
-        };
+
         //创建一个存储Map集合的List对象
         List<Map<String, Object>> weathers = new ArrayList<Map<String, Object>>();
         for (int i = 0; i < imgWeathers.length; i++) {
@@ -119,10 +154,7 @@ public class AddDiaryActivity extends ToolBarActivity implements IAddDiaryView {
                 R.drawable.btn_create_face_1, R.drawable.btn_create_face_2, R.drawable.btn_create_face_3,
                 R.drawable.btn_create_face_4, R.drawable.btn_create_face_5, R.drawable.btn_create_face_6
         };
-        final int[] clickfaces = new int[]{
-                R.drawable.btn_face_1_click, R.drawable.btn_face_2_click, R.drawable.btn_face_3_click,
-                R.drawable.btn_face_4_click, R.drawable.btn_face_5_click, R.drawable.btn_face_6_click
-        };
+
         //创建一个存储Map集合的List对象
         List<Map<String, Object>> faces = new ArrayList<Map<String, Object>>();
         for (int i = 0; i < imgfaces.length; i++) {
@@ -166,14 +198,7 @@ public class AddDiaryActivity extends ToolBarActivity implements IAddDiaryView {
         switch (item.getItemId()) {
             case R.id.save_diary:
                 String diaryText = editText.getText().toString();
-                String time = "00:00:00";
-                if (date == null) {//没选择日期时，默认当天
-                    date = c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH);
-                    time = c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE) + ":" + c.get(Calendar.SECOND);
-                }
-                String[] dateArr = date.split("-");
-                Diary diary = new Diary(null, date, diaryText, emotion, weather, Integer.valueOf(dateArr[0]), Integer.valueOf(dateArr[1]), time, 0);
-                presenter.saveDiary(diary);
+                presenter.saveDiary(date, diaryText, emotion, weather, diary, flag);
                 break;
             case R.id.clear_content:
                 editText.setText("");

@@ -45,6 +45,7 @@ public class DaoGen {
         diary.addIntProperty("weather");
         diary.addIntProperty("year").notNull();
         diary.addIntProperty("month").notNull();
+        diary.addIntProperty("week").notNull();
         diary.addStringProperty("time");
         diary.addIntProperty("hidden");
     }

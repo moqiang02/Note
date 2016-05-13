@@ -30,8 +30,9 @@ public class DiaryDao extends AbstractDao<Diary, Long> {
         public final static Property Weather = new Property(4, Integer.class, "weather", false, "WEATHER");
         public final static Property Year = new Property(5, int.class, "year", false, "YEAR");
         public final static Property Month = new Property(6, int.class, "month", false, "MONTH");
-        public final static Property Time = new Property(7, String.class, "time", false, "TIME");
-        public final static Property Hidden = new Property(8, Integer.class, "hidden", false, "HIDDEN");
+        public final static Property Week = new Property(7, int.class, "week", false, "WEEK");
+        public final static Property Time = new Property(8, String.class, "time", false, "TIME");
+        public final static Property Hidden = new Property(9, Integer.class, "hidden", false, "HIDDEN");
     };
 
 
@@ -54,8 +55,9 @@ public class DiaryDao extends AbstractDao<Diary, Long> {
                 "\"WEATHER\" INTEGER," + // 4: weather
                 "\"YEAR\" INTEGER NOT NULL ," + // 5: year
                 "\"MONTH\" INTEGER NOT NULL ," + // 6: month
-                "\"TIME\" TEXT," + // 7: time
-                "\"HIDDEN\" INTEGER);"); // 8: hidden
+                "\"WEEK\" INTEGER NOT NULL ," + // 7: week
+                "\"TIME\" TEXT," + // 8: time
+                "\"HIDDEN\" INTEGER);"); // 9: hidden
     }
 
     /** Drops the underlying database table. */
@@ -87,15 +89,16 @@ public class DiaryDao extends AbstractDao<Diary, Long> {
         }
         stmt.bindLong(6, entity.getYear());
         stmt.bindLong(7, entity.getMonth());
+        stmt.bindLong(8, entity.getWeek());
  
         String time = entity.getTime();
         if (time != null) {
-            stmt.bindString(8, time);
+            stmt.bindString(9, time);
         }
  
         Integer hidden = entity.getHidden();
         if (hidden != null) {
-            stmt.bindLong(9, hidden);
+            stmt.bindLong(10, hidden);
         }
     }
 
@@ -116,8 +119,9 @@ public class DiaryDao extends AbstractDao<Diary, Long> {
             cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4), // weather
             cursor.getInt(offset + 5), // year
             cursor.getInt(offset + 6), // month
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // time
-            cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8) // hidden
+            cursor.getInt(offset + 7), // week
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // time
+            cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9) // hidden
         );
         return entity;
     }
@@ -132,8 +136,9 @@ public class DiaryDao extends AbstractDao<Diary, Long> {
         entity.setWeather(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));
         entity.setYear(cursor.getInt(offset + 5));
         entity.setMonth(cursor.getInt(offset + 6));
-        entity.setTime(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
-        entity.setHidden(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
+        entity.setWeek(cursor.getInt(offset + 7));
+        entity.setTime(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setHidden(cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9));
      }
     
     /** @inheritdoc */
