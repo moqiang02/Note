@@ -20,37 +20,31 @@ import android.content.res.TypedArray;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 
-import com.example.rex.DaoSession;
 import com.example.rex.Diary;
-import com.example.rex.DiaryDao;
-import com.example.rex.note.App;
 import com.example.rex.note.R;
 import com.example.rex.note.adapter.DiaryAdapter;
 import com.example.rex.note.iView.IListView;
 import com.example.rex.note.presenter.ListPresenter;
 import com.example.rex.note.ui.widget.LMRecyclerView;
-import com.orhanobut.logger.Logger;
+import com.example.rex.note.ui.widget.ShowToast;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
-import de.greenrobot.dao.query.Query;
-import rx.Subscription;
 
 public class ListFragment extends BaseFragment<ListPresenter> implements
         SwipeRefreshLayout.OnRefreshListener, IListView, LMRecyclerView.LoadMoreListener {
-    private DaoSession daoSession;
-    private DiaryDao diaryDao;
     private String[] week;
     private int[] faces, weathers;
     private DiaryAdapter adapter;
-    private Query query;
+    private int page = 1;
     @Bind(R.id.recycler_view)
     LMRecyclerView recyclerView;
     @Bind(R.id.swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
-    private Subscription rxSubscription;
-    private ArrayList<Diary> Diarys;
+    private ArrayList<Diary> diaryList = new ArrayList<>();
+    private boolean isRefresh = true;
+    private boolean canLoading = true;
 
     @Override
     protected int getLayoutResId() {
@@ -77,11 +71,7 @@ public class ListFragment extends BaseFragment<ListPresenter> implements
         for (int index = 0; index < typedArray.length(); index++) {
             weathers[index] = typedArray.getResourceId(index, 0);
         }
-        daoSession = App.getDaoSession();
-        diaryDao = daoSession.getDiaryDao();
-        Diarys = (ArrayList<Diary>) diaryDao.loadAll();
-        Logger.i(Diarys.size()+"-");
-        adapter = new DiaryAdapter(getContext(), Diarys, faces, weathers, week);
+        adapter = new DiaryAdapter(getContext(), diaryList, faces, weathers, week);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
         recyclerView.setLoadMoreListener(this);
@@ -90,41 +80,60 @@ public class ListFragment extends BaseFragment<ListPresenter> implements
         swipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
-                swipeRefreshLayout.setRefreshing(true);
-
-//                presenter.fetchMeiziData(page);
-                swipeRefreshLayout.setRefreshing(false);
+                showProgress();
+                presenter.fetchDiaryData(page);
             }
         });
 
 
-//        rxSubscription = RxBus.getDefault().toObserverable(RxEvent.AddDiary.class)
-//                .subscribe(new Action1<RxEvent.AddDiary>() {
-//                               @Override
-//                               public void call(RxEvent.AddDiary bean) {
-//                                   Diarys = (ArrayList<Diary>) diaryDao.loadAll();
-//                                   adapter.notifyDataSetChanged();
-//                                   recyclerView.invalidate();
-//                                   Logger.i("333");
-//                               }
-//                           },
-//                        new Action1<Throwable>() {
-//                            @Override
-//                            public void call(Throwable throwable) {
-//                                // TODO: 处理异常
-//                            }
-//                        });
     }
 
     @Override
     public void loadMore() {
-
+        if (canLoading) {
+            presenter.fetchDiaryData(page);
+            canLoading = false;
+        }
     }
 
     @Override
     public void onRefresh() {
-        Diarys = (ArrayList<Diary>) diaryDao.loadAll();
-        adapter.notifyAll();
-        Logger.i("333");
+        isRefresh = true;
+        page = 1;
+        presenter.fetchDiaryData(page);
+    }
+
+    @Override
+    public void showDiaryList(ArrayList<Diary> diarys) {
+        canLoading = true;
+        page++;
+        if (isRefresh) {
+            diaryList.clear();
+            diaryList.addAll(diarys);
+            adapter.notifyDataSetChanged();//不使用addAll()的话，notifyDataSetChanged()无效
+            isRefresh = false;
+        } else {
+            diaryList.addAll(diarys);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void showNoMoreData() {
+        canLoading = false;
+        ShowToast.showShort("全部加载完毕");
+
+    }
+
+    @Override
+    public void showProgress() {
+        if (!swipeRefreshLayout.isRefreshing())
+            swipeRefreshLayout.setRefreshing(true);
+    }
+
+    @Override
+    public void hideProgress() {
+        if (swipeRefreshLayout.isRefreshing())
+            swipeRefreshLayout.setRefreshing(false);
     }
 }

@@ -24,10 +24,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.rex.DaoSession;
 import com.example.rex.Diary;
-import com.example.rex.DiaryDao;
-import com.example.rex.note.App;
 import com.example.rex.note.R;
 import com.example.rex.note.iView.ICalendarView;
 import com.example.rex.note.model.entity.RxEvent;
@@ -44,19 +41,15 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import de.greenrobot.dao.query.Query;
 import rx.Subscription;
 import rx.functions.Action1;
 
 public class CalendarFragment extends BaseFragment<CalendarPresenter> implements ICalendarView {
     private Subscription rxSubscription;
     private CalendarPresenter presenter;
-    private int currYear, currMonth, currDay;
     private String diaryDate;
     private Diary diary;
-    private DaoSession daoSession;
-    private DiaryDao diaryDao;
-    private Query query;
+
     private List<String> dateList = new ArrayList<>();
     @Bind(R.id.main_dp)
     protected DatePicker picker;
@@ -91,23 +84,15 @@ public class CalendarFragment extends BaseFragment<CalendarPresenter> implements
 
     public void initView() {
         Calendar c = Calendar.getInstance();
-        currYear = c.get(Calendar.YEAR);
-        currMonth = c.get(Calendar.MONTH) + 1;
-        currDay = c.get(Calendar.DAY_OF_MONTH);
+        int currYear = c.get(Calendar.YEAR);
+        int currMonth = c.get(Calendar.MONTH) + 1;
 
-        daoSession = App.getDaoSession();
-        diaryDao = daoSession.getDiaryDao();
-
-        // 自定义背景绘制示例 Example of custom date's background
-        picker.setDate(currYear, currMonth);
-        query = diaryDao.queryBuilder()
-                .where(DiaryDao.Properties.Year.eq(currYear))
-                .where(DiaryDao.Properties.Month.eq(currMonth))
-                .build();
-        List<Diary> diarys = query.list();
+        List<Diary> diarys = presenter.getDiariesByYM(currYear, currMonth);
         for (Diary item : diarys) {
             dateList.add(item.getDate());
         }
+        // 自定义背景绘制示例 Example of custom date's background
+        picker.setDate(currYear, currMonth);
         DPCManager.getInstance().setDecorBG(dateList);
 
         picker.setFestivalDisplay(true);
@@ -128,9 +113,7 @@ public class CalendarFragment extends BaseFragment<CalendarPresenter> implements
                 //当前日期已有日记
                 diaryDate = date;
                 if (dateList.contains(date)) {
-                    diary = diaryDao.queryBuilder()
-                            .where(DiaryDao.Properties.Date.eq(date))
-                            .build().unique();
+                    diary = presenter.getDiaryByDate(date);
                     if (diary != null) {
                         button.setVisibility(View.GONE);
                         tv.setVisibility(View.VISIBLE);
@@ -149,11 +132,7 @@ public class CalendarFragment extends BaseFragment<CalendarPresenter> implements
                                public void call(RxEvent.DPicker dPicker) {
                                    int month = dPicker.month;
                                    int year = dPicker.year;
-                                   query = diaryDao.queryBuilder()
-                                           .where(DiaryDao.Properties.Year.eq(year))
-                                           .where(DiaryDao.Properties.Month.eq(month))
-                                           .build();
-                                   List<Diary> diarys = query.list();
+                                   List<Diary> diarys = presenter.getDiariesByYM(year,month);
                                    dateList.clear();
                                    for (Diary item : diarys) {
                                        dateList.add(item.getDate());
@@ -161,9 +140,7 @@ public class CalendarFragment extends BaseFragment<CalendarPresenter> implements
                                    DPCManager.getInstance().setDecorBG(dateList);
 
                                    if (dateList.contains(diaryDate)) {
-                                       diary = diaryDao.queryBuilder()
-                                               .where(DiaryDao.Properties.Date.eq(diaryDate))
-                                               .build().unique();
+                                       diary = presenter.getDiaryByDate(diaryDate);
                                        if (diary != null) {
                                            button.setVisibility(View.GONE);
                                            tv.setVisibility(View.VISIBLE);

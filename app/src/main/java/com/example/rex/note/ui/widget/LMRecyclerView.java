@@ -84,8 +84,9 @@ public class LMRecyclerView extends RecyclerView {
             int lastVisibleItem = layoutManager.findLastCompletelyVisibleItemPosition();
             int totalItemCount = layoutManager.getItemCount();
             if (lastVisibleItem == (totalItemCount - 1) && isScrollingToBottom) {
-                if (listener != null)
+                if (listener != null){
                     listener.loadMore();
+                }
             }
         }
     }
