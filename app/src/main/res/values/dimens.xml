@@ -6,4 +6,5 @@
     <dimen name="list_item_avatar_size">40dp</dimen>
     <dimen name="text_small">18dp</dimen>
     <dimen name="text_medium">25dp</dimen>
+    <dimen name="margin_small">5dp</dimen>
 </resources>

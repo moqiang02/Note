@@ -1,12 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="week">
+        <item>周日</item>
         <item>周一</item>
         <item>周二</item>
         <item>周三</item>
         <item>周四</item>
         <item>周五</item>
         <item>周六</item>
-        <item>周日</item>
     </string-array>
+    <integer-array name="faces" translatable="false">
+        <item>@drawable/img_face_1</item>
+        <item>@drawable/img_face_2</item>
+        <item>@drawable/img_face_3</item>
+        <item>@drawable/img_face_4</item>
+        <item>@drawable/img_face_5</item>
+        <item>@drawable/img_face_6</item>
+    </integer-array>
+    <integer-array name="weathers">
+        <item>@drawable/img_weather_1</item>
+        <item>@drawable/img_weather_2</item>
+        <item>@drawable/img_weather_3</item>
+        <item>@drawable/img_weather_4</item>
+        <item>@drawable/img_weather_5</item>
+        <item>@drawable/img_weather_6</item>
+    </integer-array>
 </resources>

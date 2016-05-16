@@ -24,7 +24,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.ShowDiaryActivity"
-            android:label="@string/add_diary"
+            android:label="@string/show_diary"
+            android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait" />
     </application>
 

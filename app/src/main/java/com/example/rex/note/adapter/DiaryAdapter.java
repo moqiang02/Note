@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.rex.Diary;
@@ -25,11 +26,16 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.DiaryHolder>
     List<Diary> list;
     Context context;
     int lastPosition = 0;
+    int[] faces, weathers;
+    String[] week;
 
 
-    public DiaryAdapter(Context context, List<Diary> list) {
+    public DiaryAdapter(Context context, List<Diary> list, int[] faces, int[] weathers,String[] week) {
         this.list = list;
         this.context = context;
+        this.faces = faces;
+        this.weathers = weathers;
+        this.week = week;
     }
 
     @Override
@@ -42,8 +48,9 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.DiaryHolder>
     public void onBindViewHolder(DiaryHolder holder, int position) {
         Diary diary = list.get(position);
         holder.card.setTag(diary);
-
-        holder.date.setText(diary.getDate());
+        holder.date.setText(diary.getDate() + " (" + week[diary.getWeek()] + ")");
+        holder.emotion.setImageResource(faces[diary.getEmotion()]);
+        holder.weather.setImageResource(weathers[diary.getWeather()]);
         holder.content.setText(diary.getContent());
     }
 
@@ -68,6 +75,10 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.DiaryHolder>
         TextView date;
         @Bind(R.id.content)
         TextView content;
+        @Bind(R.id.emotion_l)
+        ImageView emotion;
+        @Bind(R.id.weather_l)
+        ImageView weather;
 
         public DiaryHolder(View itemView) {
             super(itemView);

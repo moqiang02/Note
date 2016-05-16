@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Note</string>
     <string name="add_diary">添加日记</string>
+    <string name="show_diary">展示日记</string>
 </resources>

@@ -17,4 +17,6 @@
     <color name="blue_semi_transparent_pressed">#80738ffe</color>
     <color name="weather_item">#55eeeeee</color>
     <color name="text_hui">#949090</color>
+    <color name="blue">#224aba</color>
+    <color name="yellow">#e9a813</color>
 </resources>

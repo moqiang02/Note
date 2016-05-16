@@ -1,6 +1,7 @@
 package com.example.rex.note.ui.activity;
 
 import android.content.DialogInterface;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,14 +22,7 @@ import butterknife.Bind;
 public class ShowDiaryActivity extends ToolBarActivity implements IShowDiaryView {
     private ShowDiaryPresenter presenter;
     private Diary diary;
-    private int[] faces = new int[]{
-            R.drawable.img_face_1, R.drawable.img_face_2, R.drawable.img_face_3,
-            R.drawable.img_face_4, R.drawable.img_face_5, R.drawable.img_face_6
-    };
-    private int[] weathers = new int[]{
-            R.drawable.img_weather_1, R.drawable.img_weather_2, R.drawable.img_weather_3,
-            R.drawable.img_weather_4, R.drawable.img_weather_5, R.drawable.img_weather_6
-    };
+    private int[] faces, weathers;
     private String[] week;
     @Bind(R.id.tv)
     protected TextView tv;
@@ -52,7 +46,18 @@ public class ShowDiaryActivity extends ToolBarActivity implements IShowDiaryView
 
     @Override
     public void initView() {
-        week = this.getResources().getStringArray(R.array.week);
+        week = getResources().getStringArray(R.array.week);
+        TypedArray typedArray = getResources().obtainTypedArray(R.array.faces);
+        faces = new int[typedArray.length()];
+        for (int index = 0; index < typedArray.length(); index++) {
+            faces[index] = typedArray.getResourceId(index, 0);
+        }
+        typedArray = getResources().obtainTypedArray(R.array.weathers);
+        weathers = new int[typedArray.length()];
+        for (int index = 0; index < typedArray.length(); index++) {
+            weathers[index] = typedArray.getResourceId(index, 0);
+        }
+//        weathers = getResources().getIntArray(R.array.weathers);
         diary = (Diary) getIntent().getSerializableExtra("diary");
         toolbar.setTitle(diary.getDate() + " (" + week[diary.getWeek()] + ")");
         tv.setText(diary.getContent());
