@@ -7,7 +7,6 @@ import com.example.rex.Diary;
 import com.example.rex.DiaryDao;
 import com.example.rex.note.App;
 import com.example.rex.note.iView.IListView;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 
@@ -34,7 +33,6 @@ public class ListPresenter extends BasePresenter<IListView> {
 
     public void fetchDiaryData(int page) {
         diarys = (ArrayList<Diary>) diaryDao.queryBuilder().orderDesc(DiaryDao.Properties.Date).offset((page - 1) * 4).limit(4).list();
-        Logger.i(page + "----" + diarys.size());
         if (diarys.size() == 0) {
             iView.showNoMoreData();
         } else {

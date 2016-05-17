@@ -51,7 +51,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.DiaryHolder>
         holder.date.setText(diary.getDate() + " (" + week[diary.getWeek()] + ")");
         holder.emotion.setImageResource(faces[diary.getEmotion()]);
         holder.weather.setImageResource(weathers[diary.getWeather()]);
-        holder.content.setText(diary.getContent());
+        holder.content.setText(diary.getContent().substring(0,40)+"...");
     }
 
     @Override
