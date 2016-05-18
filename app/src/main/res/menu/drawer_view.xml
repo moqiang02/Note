@@ -43,11 +43,11 @@
         <menu>
             <item
                 android:icon="@drawable/ic_dashboard"
-                android:title="Sub item 1"
+                android:title="检查更新"
                 android:checkable="true" />
             <item
                 android:icon="@drawable/ic_forum"
-                android:title="Sub item 2"
+                android:title="关于"
                 android:checkable="true" />
         </menu>
     </item>

@@ -161,5 +161,11 @@ public class CalendarFragment extends BaseFragment<CalendarPresenter> implements
 
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(!rxSubscription.isUnsubscribed()) {
+            rxSubscription.unsubscribe();
+        }
+    }
 }
