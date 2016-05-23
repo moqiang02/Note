@@ -30,7 +30,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.DiaryHolder>
     String[] week;
 
 
-    public DiaryAdapter(Context context, List<Diary> list, int[] faces, int[] weathers,String[] week) {
+    public DiaryAdapter(Context context, List<Diary> list, int[] faces, int[] weathers, String[] week) {
         this.list = list;
         this.context = context;
         this.faces = faces;
@@ -51,7 +51,9 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.DiaryHolder>
         holder.date.setText(diary.getDate() + " (" + week[diary.getWeek()] + ")");
         holder.emotion.setImageResource(faces[diary.getEmotion()]);
         holder.weather.setImageResource(weathers[diary.getWeather()]);
-        holder.content.setText(diary.getContent().substring(0,40)+"...");
+        if (diary.getContent().length() > 40) {
+            holder.content.setText(diary.getContent().substring(0, 40) + "...");
+        }
     }
 
     @Override

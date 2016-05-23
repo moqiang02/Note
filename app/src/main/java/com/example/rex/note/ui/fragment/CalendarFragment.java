@@ -117,7 +117,9 @@ public class CalendarFragment extends BaseFragment<CalendarPresenter> implements
                     if (diary != null) {
                         button.setVisibility(View.GONE);
                         tv.setVisibility(View.VISIBLE);
-                        tv.setText(diary.getContent().substring(0,60)+"...");
+                        if (diary.getContent().length() > 60) {
+                            tv.setText(diary.getContent().substring(0,60)+"...");
+                        }
                     }
                 } else {
                     button.setVisibility(View.VISIBLE);
